@@ -124,4 +124,25 @@ public class CustomerServiceImplTest {
         CustomerResponse response = service.createCustomer(request);
         assertEquals("Platinum", response.getTier());
     }
+
+    @Test
+    void testValidationMissingName() {
+        CustomerRequest badRequest = new CustomerRequest("", "valid@example.com", new BigDecimal("2000"), LocalDateTime.now());
+        Exception exception = assertThrows(Exception.class, () -> service.createCustomer(badRequest));
+        assertNotNull(exception.getMessage());
+    }
+
+    @Test
+    void testValidationMissingEmail() {
+        CustomerRequest badRequest = new CustomerRequest("No Email", "", new BigDecimal("2000"), LocalDateTime.now());
+        Exception exception = assertThrows(Exception.class, () -> service.createCustomer(badRequest));
+        assertNotNull(exception.getMessage());
+    }
+
+    @Test
+    void testValidationInvalidEmailFormat() {
+        CustomerRequest badRequest = new CustomerRequest("Bad Email", "invalid-email", new BigDecimal("2000"), LocalDateTime.now());
+        Exception exception = assertThrows(Exception.class, () -> service.createCustomer(badRequest));
+        assertNotNull(exception.getMessage());
+    }
 }

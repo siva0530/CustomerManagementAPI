@@ -94,14 +94,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private String calculateTier(BigDecimal spend, LocalDateTime lastPurchase) {
-        System.out.println("Spend = " + spend + ", Last Purchase = " + lastPurchase);
+        log.info("Spend = {}, Last Purchase = {}", spend, lastPurchase);
 
         if (spend == null) return "Silver";
 
         if (spend.compareTo(new BigDecimal("10000")) >= 0 &&
                 lastPurchase != null &&
                 lastPurchase.isAfter(LocalDateTime.now().minusMonths(6))) {
-            System.out.println("Returning Platinum");
+            log.info("Returning Tier: Platinum");
             return "Platinum";
         }
 
@@ -109,11 +109,11 @@ public class CustomerServiceImpl implements CustomerService {
                 spend.compareTo(new BigDecimal("10000")) < 0 &&
                 lastPurchase != null &&
                 lastPurchase.isAfter(LocalDateTime.now().minusMonths(12))) {
-            System.out.println("Returning Gold");
+            log.info("Returning Tier: Gold");
             return "Gold";
         }
 
-        System.out.println("Returning Silver");
+        log.info("Returning Tier: Silver");
         return "Silver";
     }
 }
